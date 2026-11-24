@@ -1,0 +1,567 @@
+/*! tailwindcss v4.3.5 | MIT License | https://tailwindcss.com */
+@layer theme, base, components, utilities;
+@layer theme {
+  :root, :host {
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+      "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+      "Segoe UI Symbol", "Noto Color Emoji";
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace;
+    --default-font-family: var(--font-sans);
+    --default-mono-font-family: var(--font-mono);
+    --color-primary: #365a4a;
+    --color-primary-hover: #294839;
+    --color-secondary: #a66b4f;
+    --color-secondary-hover: #8f593f;
+    --color-tertiary: #927f73;
+    --color-tertiary-hover: #78665b;
+    --color-accent: #e8b978;
+    --color-accent-hover: #d5a45f;
+    --color-background: #faf7f2;
+    --color-background-hover: #f2ebe2;
+    --color-inner-card: #ffffff;
+    --color-inner-card-hover: #fcfaf7;
+    --color-outer-card: #f8f4ee;
+    --color-outer-card-hover: #efe8df;
+    --color-border: #e6d8c9;
+    --color-border-hover: #cdb9a4;
+    --color-dark: #2d211c;
+    --color-dark-hover: #49352d;
+    --color-light: #ffffff;
+    --color-light-hover: #f4d6ad;
+  }
+}
+@layer base {
+  *, ::after, ::before, ::backdrop, ::file-selector-button {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0 solid;
+  }
+  html, :host {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+    font-family: var(--default-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji");
+    font-feature-settings: var(--default-font-feature-settings, normal);
+    font-variation-settings: var(--default-font-variation-settings, normal);
+    -webkit-tap-highlight-color: transparent;
+  }
+  hr {
+    height: 0;
+    color: inherit;
+    border-top-width: 1px;
+  }
+  abbr:where([title]) {
+    -webkit-text-decoration: underline dotted;
+    text-decoration: underline dotted;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+  a {
+    color: inherit;
+    -webkit-text-decoration: inherit;
+    text-decoration: inherit;
+  }
+  b, strong {
+    font-weight: bolder;
+  }
+  code, kbd, samp, pre {
+    font-family: var(--default-mono-font-family, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
+    font-feature-settings: var(--default-mono-font-feature-settings, normal);
+    font-variation-settings: var(--default-mono-font-variation-settings, normal);
+    font-size: 1em;
+  }
+  small {
+    font-size: 80%;
+  }
+  sub, sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+  }
+  sub {
+    bottom: -0.25em;
+  }
+  sup {
+    top: -0.5em;
+  }
+  table {
+    text-indent: 0;
+    border-color: inherit;
+    border-collapse: collapse;
+  }
+  :-moz-focusring:where(:not(iframe)) {
+    outline: auto;
+  }
+  progress {
+    vertical-align: baseline;
+  }
+  summary {
+    display: list-item;
+  }
+  ol, ul, menu {
+    list-style: none;
+  }
+  img, svg, video, canvas, audio, iframe, embed, object {
+    display: block;
+    vertical-align: middle;
+  }
+  img, video {
+    max-width: 100%;
+    height: auto;
+  }
+  button, input, select, optgroup, textarea, ::file-selector-button {
+    font: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    border-radius: 0;
+    background-color: transparent;
+    opacity: 1;
+  }
+  :where(select:is([multiple], [size])) optgroup {
+    font-weight: bolder;
+  }
+  :where(select:is([multiple], [size])) optgroup option {
+    padding-inline-start: 20px;
+  }
+  ::file-selector-button {
+    margin-inline-end: 4px;
+  }
+  ::placeholder {
+    opacity: 1;
+  }
+  @supports (not (-webkit-appearance: -apple-pay-button))  or (contain-intrinsic-size: 1px) {
+    ::placeholder {
+      color: currentcolor;
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, currentcolor 50%, transparent);
+      }
+    }
+  }
+  textarea {
+    resize: vertical;
+  }
+  ::-webkit-search-decoration {
+    -webkit-appearance: none;
+  }
+  ::-webkit-date-and-time-value {
+    min-height: 1lh;
+    text-align: inherit;
+  }
+  ::-webkit-datetime-edit {
+    display: inline-flex;
+  }
+  ::-webkit-datetime-edit-fields-wrapper {
+    padding: 0;
+  }
+  ::-webkit-datetime-edit, ::-webkit-datetime-edit-year-field, ::-webkit-datetime-edit-month-field, ::-webkit-datetime-edit-day-field, ::-webkit-datetime-edit-hour-field, ::-webkit-datetime-edit-minute-field, ::-webkit-datetime-edit-second-field, ::-webkit-datetime-edit-millisecond-field, ::-webkit-datetime-edit-meridiem-field {
+    padding-block: 0;
+  }
+  ::-webkit-calendar-picker-indicator {
+    line-height: 1;
+  }
+  :-moz-ui-invalid {
+    box-shadow: none;
+  }
+  button, input:where([type="button"], [type="reset"], [type="submit"]), ::file-selector-button {
+    appearance: button;
+  }
+  ::-webkit-inner-spin-button, ::-webkit-outer-spin-button {
+    height: auto;
+  }
+  [hidden]:where(:not([hidden="until-found"])) {
+    display: none !important;
+  }
+}
+@layer utilities {
+  .static {
+    position: static;
+  }
+  .border-accent {
+    border-color: var(--color-accent);
+  }
+  .border-accent-hover {
+    border-color: var(--color-accent-hover);
+  }
+  .border-background {
+    border-color: var(--color-background);
+  }
+  .border-background-hover {
+    border-color: var(--color-background-hover);
+  }
+  .border-border {
+    border-color: var(--color-border);
+  }
+  .border-border-hover {
+    border-color: var(--color-border-hover);
+  }
+  .border-dark {
+    border-color: var(--color-dark);
+  }
+  .border-dark-hover {
+    border-color: var(--color-dark-hover);
+  }
+  .border-inner-card {
+    border-color: var(--color-inner-card);
+  }
+  .border-inner-card-hover {
+    border-color: var(--color-inner-card-hover);
+  }
+  .border-light {
+    border-color: var(--color-light);
+  }
+  .border-light-hover {
+    border-color: var(--color-light-hover);
+  }
+  .border-outer-card {
+    border-color: var(--color-outer-card);
+  }
+  .border-outer-card-hover {
+    border-color: var(--color-outer-card-hover);
+  }
+  .border-primary {
+    border-color: var(--color-primary);
+  }
+  .border-primary-hover {
+    border-color: var(--color-primary-hover);
+  }
+  .border-secondary {
+    border-color: var(--color-secondary);
+  }
+  .border-secondary-hover {
+    border-color: var(--color-secondary-hover);
+  }
+  .border-tertiary {
+    border-color: var(--color-tertiary);
+  }
+  .border-tertiary-hover {
+    border-color: var(--color-tertiary-hover);
+  }
+  .bg-accent {
+    background-color: var(--color-accent);
+  }
+  .bg-accent-hover {
+    background-color: var(--color-accent-hover);
+  }
+  .bg-background {
+    background-color: var(--color-background);
+  }
+  .bg-background-hover {
+    background-color: var(--color-background-hover);
+  }
+  .bg-border {
+    background-color: var(--color-border);
+  }
+  .bg-border-hover {
+    background-color: var(--color-border-hover);
+  }
+  .bg-dark {
+    background-color: var(--color-dark);
+  }
+  .bg-dark-hover {
+    background-color: var(--color-dark-hover);
+  }
+  .bg-inner-card {
+    background-color: var(--color-inner-card);
+  }
+  .bg-inner-card-hover {
+    background-color: var(--color-inner-card-hover);
+  }
+  .bg-light {
+    background-color: var(--color-light);
+  }
+  .bg-light-hover {
+    background-color: var(--color-light-hover);
+  }
+  .bg-outer-card {
+    background-color: var(--color-outer-card);
+  }
+  .bg-outer-card-hover {
+    background-color: var(--color-outer-card-hover);
+  }
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+  .bg-primary-hover {
+    background-color: var(--color-primary-hover);
+  }
+  .bg-secondary {
+    background-color: var(--color-secondary);
+  }
+  .bg-secondary-hover {
+    background-color: var(--color-secondary-hover);
+  }
+  .bg-tertiary {
+    background-color: var(--color-tertiary);
+  }
+  .bg-tertiary-hover {
+    background-color: var(--color-tertiary-hover);
+  }
+  .text-accent {
+    color: var(--color-accent);
+  }
+  .text-accent-hover {
+    color: var(--color-accent-hover);
+  }
+  .text-background {
+    color: var(--color-background);
+  }
+  .text-background-hover {
+    color: var(--color-background-hover);
+  }
+  .text-border {
+    color: var(--color-border);
+  }
+  .text-border-hover {
+    color: var(--color-border-hover);
+  }
+  .text-dark {
+    color: var(--color-dark);
+  }
+  .text-dark-hover {
+    color: var(--color-dark-hover);
+  }
+  .text-inner-card {
+    color: var(--color-inner-card);
+  }
+  .text-inner-card-hover {
+    color: var(--color-inner-card-hover);
+  }
+  .text-light {
+    color: var(--color-light);
+  }
+  .text-light-hover {
+    color: var(--color-light-hover);
+  }
+  .text-outer-card {
+    color: var(--color-outer-card);
+  }
+  .text-outer-card-hover {
+    color: var(--color-outer-card-hover);
+  }
+  .text-primary {
+    color: var(--color-primary);
+  }
+  .text-primary-hover {
+    color: var(--color-primary-hover);
+  }
+  .text-secondary {
+    color: var(--color-secondary);
+  }
+  .text-secondary-hover {
+    color: var(--color-secondary-hover);
+  }
+  .text-tertiary {
+    color: var(--color-tertiary);
+  }
+  .text-tertiary-hover {
+    color: var(--color-tertiary-hover);
+  }
+  @media (hover: hover) {
+    .hover\:border-accent:hover {
+      border-color: var(--color-accent);
+    }
+    .hover\:border-accent-hover:hover {
+      border-color: var(--color-accent-hover);
+    }
+    .hover\:border-background:hover {
+      border-color: var(--color-background);
+    }
+    .hover\:border-background-hover:hover {
+      border-color: var(--color-background-hover);
+    }
+    .hover\:border-border:hover {
+      border-color: var(--color-border);
+    }
+    .hover\:border-border-hover:hover {
+      border-color: var(--color-border-hover);
+    }
+    .hover\:border-dark:hover {
+      border-color: var(--color-dark);
+    }
+    .hover\:border-dark-hover:hover {
+      border-color: var(--color-dark-hover);
+    }
+    .hover\:border-inner-card:hover {
+      border-color: var(--color-inner-card);
+    }
+    .hover\:border-inner-card-hover:hover {
+      border-color: var(--color-inner-card-hover);
+    }
+    .hover\:border-light:hover {
+      border-color: var(--color-light);
+    }
+    .hover\:border-light-hover:hover {
+      border-color: var(--color-light-hover);
+    }
+    .hover\:border-outer-card:hover {
+      border-color: var(--color-outer-card);
+    }
+    .hover\:border-outer-card-hover:hover {
+      border-color: var(--color-outer-card-hover);
+    }
+    .hover\:border-primary:hover {
+      border-color: var(--color-primary);
+    }
+    .hover\:border-primary-hover:hover {
+      border-color: var(--color-primary-hover);
+    }
+    .hover\:border-secondary:hover {
+      border-color: var(--color-secondary);
+    }
+    .hover\:border-secondary-hover:hover {
+      border-color: var(--color-secondary-hover);
+    }
+    .hover\:border-tertiary:hover {
+      border-color: var(--color-tertiary);
+    }
+    .hover\:border-tertiary-hover:hover {
+      border-color: var(--color-tertiary-hover);
+    }
+    .hover\:bg-accent:hover {
+      background-color: var(--color-accent);
+    }
+    .hover\:bg-accent-hover:hover {
+      background-color: var(--color-accent-hover);
+    }
+    .hover\:bg-background:hover {
+      background-color: var(--color-background);
+    }
+    .hover\:bg-background-hover:hover {
+      background-color: var(--color-background-hover);
+    }
+    .hover\:bg-border:hover {
+      background-color: var(--color-border);
+    }
+    .hover\:bg-border-hover:hover {
+      background-color: var(--color-border-hover);
+    }
+    .hover\:bg-dark:hover {
+      background-color: var(--color-dark);
+    }
+    .hover\:bg-dark-hover:hover {
+      background-color: var(--color-dark-hover);
+    }
+    .hover\:bg-inner-card:hover {
+      background-color: var(--color-inner-card);
+    }
+    .hover\:bg-inner-card-hover:hover {
+      background-color: var(--color-inner-card-hover);
+    }
+    .hover\:bg-light:hover {
+      background-color: var(--color-light);
+    }
+    .hover\:bg-light-hover:hover {
+      background-color: var(--color-light-hover);
+    }
+    .hover\:bg-outer-card:hover {
+      background-color: var(--color-outer-card);
+    }
+    .hover\:bg-outer-card-hover:hover {
+      background-color: var(--color-outer-card-hover);
+    }
+    .hover\:bg-primary:hover {
+      background-color: var(--color-primary);
+    }
+    .hover\:bg-primary-hover:hover {
+      background-color: var(--color-primary-hover);
+    }
+    .hover\:bg-secondary:hover {
+      background-color: var(--color-secondary);
+    }
+    .hover\:bg-secondary-hover:hover {
+      background-color: var(--color-secondary-hover);
+    }
+    .hover\:bg-tertiary:hover {
+      background-color: var(--color-tertiary);
+    }
+    .hover\:bg-tertiary-hover:hover {
+      background-color: var(--color-tertiary-hover);
+    }
+    .hover\:text-accent:hover {
+      color: var(--color-accent);
+    }
+    .hover\:text-accent-hover:hover {
+      color: var(--color-accent-hover);
+    }
+    .hover\:text-background:hover {
+      color: var(--color-background);
+    }
+    .hover\:text-background-hover:hover {
+      color: var(--color-background-hover);
+    }
+    .hover\:text-border:hover {
+      color: var(--color-border);
+    }
+    .hover\:text-border-hover:hover {
+      color: var(--color-border-hover);
+    }
+    .hover\:text-dark:hover {
+      color: var(--color-dark);
+    }
+    .hover\:text-dark-hover:hover {
+      color: var(--color-dark-hover);
+    }
+    .hover\:text-inner-card:hover {
+      color: var(--color-inner-card);
+    }
+    .hover\:text-inner-card-hover:hover {
+      color: var(--color-inner-card-hover);
+    }
+    .hover\:text-light:hover {
+      color: var(--color-light);
+    }
+    .hover\:text-light-hover:hover {
+      color: var(--color-light-hover);
+    }
+    .hover\:text-outer-card:hover {
+      color: var(--color-outer-card);
+    }
+    .hover\:text-outer-card-hover:hover {
+      color: var(--color-outer-card-hover);
+    }
+    .hover\:text-primary:hover {
+      color: var(--color-primary);
+    }
+    .hover\:text-primary-hover:hover {
+      color: var(--color-primary-hover);
+    }
+    .hover\:text-secondary:hover {
+      color: var(--color-secondary);
+    }
+    .hover\:text-secondary-hover:hover {
+      color: var(--color-secondary-hover);
+    }
+    .hover\:text-tertiary:hover {
+      color: var(--color-tertiary);
+    }
+    .hover\:text-tertiary-hover:hover {
+      color: var(--color-tertiary-hover);
+    }
+  }
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("../fonts/DMSans.woff2") format("woff2");
+  font-weight: 100 1000;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Playfair Display";
+  src: url("../fonts/PlayfairDisplay.woff2") format("woff2");
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+@layer base {
+  html {
+    @apply --font-dm;
+  }
+}

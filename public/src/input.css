@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@source "../**/*.php";
+
+@font-face {
+    font-family: "DM Sans";
+    src: url("../fonts/DMSans.woff2") format("woff2");
+    font-weight: 100 1000;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Playfair Display";
+    src: url("../fonts/PlayfairDisplay.woff2") format("woff2");
+    font-weight: 200 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@theme {
+    --font-dm: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+    --font-playfair: "Playfair Display", serif;
+}
+
+@layer base {
+    html {
+        @apply --font-dm;
+    }
+}
+
+@theme {
+    --color-primary: #365a4a;
+    --color-primary-hover: #294839;
+    --color-secondary: #a66b4f;
+    --color-secondary-hover: #8f593f;
+    --color-tertiary: #927f73;
+    --color-tertiary-hover: #78665b;
+    --color-accent: #e8b978;
+    --color-accent-hover: #d5a45f;
+    --color-background: #faf7f2;
+    --color-background-hover: #f2ebe2;
+    --color-inner-card: #ffffff;
+    --color-inner-card-hover: #fcfaf7;
+    --color-outer-card: #f8f4ee;
+    --color-outer-card-hover: #efe8df;
+    --color-border: #e6d8c9;
+    --color-border-hover: #cdb9a4;
+    --color-dark: #2d211c;
+    --color-dark-hover: #49352d;
+    --color-light: #ffffff;
+    --color-light-hover: #f4d6ad;
+}
+
+@source inline("{hover:,}{bg,text,border}-{primary,secondary,tertiary,accent,background,inner-card,outer-card,border,dark,light}{,-hover}");
