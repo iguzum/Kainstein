@@ -53,8 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="absolute inset-0 bg-black/30"></div>
 
                     <div class="relative z-10 flex flex-col justify-end p-6 text-white">
-                        <h2 class="text-6xl font-black tracking-wider uppercase">Kainstein</h2>
-                        <p>Smart kain, halimaw sa sarap.</p>
+                        <h2 class="text-5xl font-black tracking-widest uppercase">Kainstein</h2>
+                        <p>Sulit sa bulsa, halimaw sa sarap.</p>
                     </div>
                 </div>
                 <!-- LEFT SIDE END -->

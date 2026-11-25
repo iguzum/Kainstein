@@ -46,7 +46,7 @@ $categoryIcons = [
 
         <?php foreach ($categories as $slug => $name): ?>
             <a href="?category=<?= $slug ?>"
-                class="<?= $selectedCategory === $slug ? 'active' : '' ?> flex w-full items-center gap-4 rounded-xl px-4 py-3.5 text-sm font-semibold transition">
+                class="<?= $selectedCategory === $slug ? 'active' : '' ?> flex w-full items-center gap-4 rounded-xl px-4 py-3.5 text-sm font-semibold transition hover:bg-background-hover">
 
                 <!-- :: START CATEGORY NAV ICON -->
                 <i

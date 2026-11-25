@@ -72,7 +72,7 @@ try {
                 </span>
                 <span>
                     <span class="block font-playfair text-2xl font-bold tracking-wide">KAINSTEIN</span>
-                    <span class="text-xs text-tertiary">Staff workspace</span>
+                    <span class="text-xs text-tertiary">Staff Workspace</span>
                 </span>
             </a>
 
@@ -94,20 +94,23 @@ try {
                 <!-- :: END STAFF MENU ROOT LINK -->
             </nav>
 
-            <div class="mt-8 rounded-2xl bg-background p-4">
-                <p class="text-xs font-bold uppercase tracking-[.16em] text-secondary">Service note</p>
-                <p class="mt-2 text-sm leading-6 text-tertiary">Keep the queue moving and serve every order with care.
-                </p>
-            </div>
-
             <!-- :: START STAFF ACCOUNT LINKS -->
-            <div class="mt-4 rounded-2xl bg-background p-4">
+            <div class="mt-5 rounded-2xl bg-background p-4">
                 <p class="text-xs font-bold uppercase tracking-[.16em] text-secondary">Signed in as</p>
                 <!-- :: START SIGNED-IN STAFF NAME -->
-                <p class="mt-2 break-all text-sm font-semibold"><?= htmlspecialchars($staffAccount['account_name'] ?? $staffAccount['email'], ENT_QUOTES, 'UTF-8') ?></p>
+                <p class="mt-4 break-all text-md font-semibold flex flex-col leading-5">
+                    <span>
+                        <?= htmlspecialchars($staffAccount['account_name'] ?? $staffAccount['email'], ENT_QUOTES, 'UTF-8') ?>
+                    </span>
+
+                    <span class="text-xs text-tertiary">
+                        <?= htmlspecialchars($staffAccount['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>
+                    </span>
+                </p>
                 <!-- :: END SIGNED-IN STAFF NAME -->
             </div>
-            <a href="../logout.php" class="mt-4 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-tertiary transition hover:bg-background-hover hover:text-dark lg:mt-auto">
+            <a href="../logout.php"
+                class="mt-4 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-tertiary transition hover:bg-background-hover hover:text-dark lg:mt-auto">
                 <i class="bx bx-log-out text-xl" aria-hidden="true"></i> Log out
             </a>
             <!-- :: END STAFF ACCOUNT LINKS -->
@@ -124,23 +127,27 @@ try {
                 </div>
                 <span
                     class="inline-flex items-center gap-2 rounded-full border border-border bg-inner-card px-4 py-2 text-xs font-semibold text-tertiary">
-                    <span class="size-2 rounded-full bg-accent"></span> Staff view
+                    <span class="size-2 rounded-full bg-accent"></span>
+                    Staff only
                 </span>
             </header>
 
             <!-- :: START ORDER QUEUE FEEDBACK -->
             <?php if ($placedOrder): ?>
-                <p role="status" class="mb-5 rounded-xl border border-primary/20 bg-primary/10 px-4 py-3 text-sm font-semibold text-primary">
+                <p role="status"
+                    class="mb-5 rounded-xl border border-primary/20 bg-primary/10 px-4 py-3 text-sm font-semibold text-primary">
                     Customer order placed and added to the FIFO queue.
                 </p>
             <?php endif; ?>
             <?php if ($completedOrder): ?>
-                <p role="status" class="mb-5 rounded-xl border border-primary/20 bg-primary/10 px-4 py-3 text-sm font-semibold text-primary">
+                <p role="status"
+                    class="mb-5 rounded-xl border border-primary/20 bg-primary/10 px-4 py-3 text-sm font-semibold text-primary">
                     Order completed and removed from the queue.
                 </p>
             <?php endif; ?>
             <?php if ($queueError !== ''): ?>
-                <p role="alert" class="mb-5 rounded-xl border border-secondary/30 bg-secondary/10 px-4 py-3 text-sm text-dark">
+                <p role="alert"
+                    class="mb-5 rounded-xl border border-secondary/30 bg-secondary/10 px-4 py-3 text-sm text-dark">
                     <?= htmlspecialchars($queueError, ENT_QUOTES, 'UTF-8') ?>
                 </p>
             <?php endif; ?>
@@ -178,7 +185,7 @@ try {
                     <p class="mt-1 truncate font-playfair text-2xl font-bold">
                         <?= $nextOrder ? htmlspecialchars($nextOrder['customer_name'], ENT_QUOTES, 'UTF-8') : '—' ?>
                     </p>
-                    <p class="mt-2 text-xs text-tertiary">First in the FIFO queue.</p>
+                    <p class="mt-2 text-xs text-tertiary">First in the queue.</p>
                 </article>
                 <article class="rounded-2xl border border-border bg-inner-card p-5 shadow-sm">
                     <span class="grid size-11 place-items-center rounded-xl bg-outer-card text-xl text-tertiary"><i
@@ -205,7 +212,8 @@ try {
                 <!-- :: START FIFO ORDER LIST -->
                 <?php if (empty($pendingOrders)): ?>
                     <div class="mt-6 rounded-2xl border border-dashed border-border bg-background px-5 py-12 text-center">
-                        <span class="mx-auto grid size-14 place-items-center rounded-2xl bg-inner-card text-2xl text-tertiary">
+                        <span
+                            class="mx-auto grid size-14 place-items-center rounded-2xl bg-inner-card text-2xl text-tertiary">
                             <i class="bx bx-receipt" aria-hidden="true"></i>
                         </span>
                         <h3 class="mt-4 font-semibold">The queue is empty</h3>
@@ -216,7 +224,8 @@ try {
                 <?php else: ?>
                     <div class="mt-6 space-y-4">
                         <?php foreach ($pendingOrders as $index => $order): ?>
-                            <article class="rounded-2xl border <?= $index === 0 ? 'border-primary/40 bg-background' : 'border-border bg-inner-card' ?> p-5 sm:p-6">
+                            <article
+                                class="rounded-2xl border <?= $index === 0 ? 'border-primary/40 bg-background' : 'border-border bg-inner-card' ?> p-5 sm:p-6">
                                 <div class="flex flex-wrap items-start justify-between gap-4">
                                     <div>
                                         <div class="flex flex-wrap items-center gap-2">
@@ -224,23 +233,30 @@ try {
                                                 <?= htmlspecialchars($order['customer_name'], ENT_QUOTES, 'UTF-8') ?>
                                             </h3>
                                             <?php if ($index === 0): ?>
-                                                <span class="rounded-full bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-light">Next up</span>
+                                                <span
+                                                    class="rounded-full bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-light">Next
+                                                    up</span>
                                             <?php else: ?>
-                                                <span class="rounded-full bg-outer-card px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-tertiary">In line</span>
+                                                <span
+                                                    class="rounded-full bg-outer-card px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-tertiary">In
+                                                    line</span>
                                             <?php endif; ?>
                                         </div>
                                         <p class="mt-2 text-xs font-medium text-tertiary">
-                                            Order #<?= (int) $order['order_id'] ?> · <?= htmlspecialchars(ucwords(str_replace('_', ' ', $order['order_type'])), ENT_QUOTES, 'UTF-8') ?>
+                                            Order #<?= (int) $order['order_id'] ?> ·
+                                            <?= htmlspecialchars(ucwords(str_replace('_', ' ', $order['order_type'])), ENT_QUOTES, 'UTF-8') ?>
                                         </p>
                                     </div>
                                     <div class="rounded-xl bg-outer-card px-3 py-2 text-right">
                                         <p class="text-[10px] font-bold uppercase tracking-wider text-tertiary">Order total</p>
-                                        <p class="mt-1 font-bold text-primary">₱<?= number_format((float) $order['total'], 2) ?></p>
+                                        <p class="mt-1 font-bold text-primary">₱<?= number_format((float) $order['total'], 2) ?>
+                                        </p>
                                     </div>
                                 </div>
 
                                 <div class="mt-5 border-t border-border pt-4">
-                                    <p class="mb-3 text-[10px] font-bold uppercase tracking-[.16em] text-tertiary">Order items</p>
+                                    <p class="mb-3 text-[10px] font-bold uppercase tracking-[.16em] text-tertiary">Order items
+                                    </p>
                                     <div class="space-y-3">
                                         <?php foreach ($order['items'] as $item): ?>
                                             <div class="flex items-center justify-between gap-4 text-sm">
@@ -249,10 +265,12 @@ try {
                                                         <?= htmlspecialchars($item['item_name'], ENT_QUOTES, 'UTF-8') ?>
                                                     </p>
                                                     <p class="mt-1 text-xs text-tertiary">
-                                                        <?= (int) $item['quantity'] ?> × ₱<?= number_format((float) $item['unit_price'], 2) ?>
+                                                        <?= (int) $item['quantity'] ?> ×
+                                                        ₱<?= number_format((float) $item['unit_price'], 2) ?>
                                                     </p>
                                                 </div>
-                                                <p class="shrink-0 font-semibold text-dark">₱<?= number_format((float) $item['line_total'], 2) ?></p>
+                                                <p class="shrink-0 font-semibold text-dark">
+                                                    ₱<?= number_format((float) $item['line_total'], 2) ?></p>
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
@@ -262,7 +280,8 @@ try {
                                     <!-- :: START COMPLETE NEXT BUTTON -->
                                     <form method="post" action="index.php" class="mt-5 border-t border-border pt-4">
                                         <input type="hidden" name="form_action" value="complete_next_order">
-                                        <button type="submit" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-bold text-light transition hover:bg-primary-hover sm:w-auto">
+                                        <button type="submit"
+                                            class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-bold text-light transition hover:bg-primary-hover sm:w-auto">
                                             <i class="bx bx-check-circle text-lg" aria-hidden="true"></i>
                                             Mark done &amp; move to next
                                         </button>
@@ -276,7 +295,7 @@ try {
                 <!-- :: END FIFO ORDER LIST -->
             </section>
 
-            <footer class="mt-8 text-center text-xs text-tertiary">© <?= date('Y') ?> KAINSTEIN · Staff workspace
+            <footer class="mt-8 text-center text-xs text-tertiary">© <?= date('Y') ?> KAINSTEIN · Staff Workspace
             </footer>
         </main>
     </div>

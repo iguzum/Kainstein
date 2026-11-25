@@ -169,7 +169,7 @@ if (
             $customerName
         );
 
-        // :: START RETURN STAFF TO DASHBOARD AFTER ORDER
+        // :: START RETURN STAFF TO ORDERING HOME AFTER ORDER
         if ($isStaffOrdering) {
             unset(
                 $_SESSION['staff_order_id'],
@@ -178,10 +178,10 @@ if (
                 $_SESSION['staff_order_name'],
                 $_SESSION['staff_order_type']
             );
-            header('Location: staff/index.php?order=placed');
+            header('Location: index.php?order=placed');
             exit;
         }
-        // :: END RETURN STAFF TO DASHBOARD AFTER ORDER
+        // :: END RETURN STAFF TO ORDERING HOME AFTER ORDER
 
         unset($_SESSION['order_id'], $_SESSION['customer_id'], $_SESSION['cart_id'], $_SESSION['order_type']);
         // :: START MENU ORDER SUCCESS REDIRECT

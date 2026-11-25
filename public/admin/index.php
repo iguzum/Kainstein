@@ -148,7 +148,7 @@ $e = static fn($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 
                         class="bx bx-bowl-hot" aria-hidden="true"></i></span>
                 <span>
                     <span class="block font-playfair text-2xl font-bold tracking-wide">KAINSTEIN</span>
-                    <span class="text-xs text-tertiary">Admin console</span>
+                    <span class="text-xs text-tertiary">Admin Control Panel</span>
                 </span>
             </a>
             <p class="mb-3 mt-10 px-3 text-[10px] font-bold uppercase tracking-[.2em] text-tertiary">Management</p>
@@ -197,7 +197,7 @@ $e = static fn($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 
                 </div>
                 <span
                     class="inline-flex items-center gap-2 rounded-full border border-border bg-inner-card px-4 py-2 text-xs font-semibold text-tertiary"><span
-                        class="size-2 rounded-full bg-accent"></span> Admin view</span>
+                        class="size-2 rounded-full bg-accent"></span> Admin only</span>
             </header>
 
             <?php if ($message): ?>
@@ -247,11 +247,16 @@ $e = static fn($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 
                             <?= $editStaff ? '' : 'required' ?> minlength="8" type="password" name="password"
                             placeholder="At least 8 characters"
                             class="mt-2 w-full rounded-xl border border-border bg-inner-card px-4 py-3 text-sm outline-none focus:border-primary"></label>
-                    <div class="flex items-end gap-2"><button
+                    <div class="flex items-end gap-2">
+                        <button
                             class="w-full rounded-xl bg-primary px-4 py-3 text-sm font-bold text-light hover:bg-primary-hover"
-                            type="submit"><?= $editStaff ? 'Save changes' : 'Create staff' ?></button><?php if ($editStaff): ?><a
-                                href="index.php#staff-management"
-                                class="rounded-xl border border-border px-4 py-3 text-sm font-semibold">Cancel</a><?php endif; ?>
+                            type="submit"><?= $editStaff ? 'Save changes' : 'Create staff' ?>
+                        </button>
+                        <?php if ($editStaff): ?><a href="index.php#staff-management"
+                                class="rounded-xl border border-border px-4 py-3 text-sm font-semibold">
+                                Cancel
+                            </a>
+                        <?php endif; ?>
                     </div>
                 </form>
                 <!-- :: START STAFF NAME SEARCH FORM -->
@@ -266,7 +271,9 @@ $e = static fn($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 
                     </button>
                     <?php if ($staffSearch !== ''): ?>
                         <a href="index.php#staff-management"
-                            class="inline-flex items-center justify-center rounded-xl border border-border px-5 py-3 text-sm font-semibold text-tertiary transition hover:bg-background-hover hover:text-dark">Clear</a>
+                            class="inline-flex items-center justify-center rounded-xl border border-border px-5 py-3 text-sm font-semibold text-tertiary transition hover:bg-background-hover hover:text-dark">
+                            Clear
+                        </a>
                     <?php endif; ?>
                 </form>
                 <p class="mb-3 text-xs text-tertiary">
@@ -276,7 +283,7 @@ $e = static fn($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 
                 <!-- :: END STAFF NAME SEARCH FORM -->
                 <div class="overflow-x-auto">
                     <!-- :: START STAFF TABLE NAME LAYOUT -->
-                    <table class="w-full min-w-[700px] text-left text-sm">
+                    <table class="w-full min-w-175 text-left text-sm">
                         <thead class="text-xs uppercase tracking-wider text-tertiary">
                             <tr>
                                 <!-- :: START STAFF NAME AND EMAIL HEADINGS -->
@@ -341,32 +348,45 @@ $e = static fn($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 
                             class="mt-2 w-full rounded-xl border border-border bg-inner-card px-4 py-3 text-sm outline-none focus:border-primary"><?php foreach ($categories as $category): ?>
                                 <option value="<?= $e($category) ?>" <?= ($editMenu['category'] ?? '') === $category ? 'selected' : '' ?>><?= $e(ucwords(str_replace('_', ' ', $category))) ?></option>
                             <?php endforeach; ?>
-                        </select></label>
+                        </select>
+                    </label>
                     <label class="text-sm font-semibold">Price (₱)<input required min="0" step="0.01" type="number"
                             name="price" value="<?= $e($editMenu['price'] ?? '') ?>"
-                            class="mt-2 w-full rounded-xl border border-border bg-inner-card px-4 py-3 text-sm outline-none focus:border-primary"></label>
+                            class="mt-2 w-full rounded-xl border border-border bg-inner-card px-4 py-3 text-sm outline-none focus:border-primary">
+                    </label>
                     <label class="text-sm font-semibold sm:col-span-2 lg:col-span-3">Image URL<input required type="url"
                             name="image_url" value="<?= $e($editMenu['image_url'] ?? '') ?>" placeholder="https://..."
-                            class="mt-2 w-full rounded-xl border border-border bg-inner-card px-4 py-3 text-sm outline-none focus:border-primary"></label>
-                    <label class="text-sm font-semibold sm:col-span-2 lg:col-span-2">Description<textarea
-                            name="description" rows="2"
-                            class="mt-2 w-full rounded-xl border border-border bg-inner-card px-4 py-3 text-sm outline-none focus:border-primary"><?= $e($editMenu['description'] ?? '') ?></textarea></label>
+                            class="mt-2 w-full rounded-xl border border-border bg-inner-card px-4 py-3 text-sm outline-none focus:border-primary">
+                    </label>
+                    <label class="text-sm font-semibold sm:col-span-2 lg:col-span-2">Description
+                        <textarea name="description" rows="2"
+                            class="mt-2 w-full rounded-xl border border-border bg-inner-card px-4 py-3 text-sm outline-none focus:border-primary"><?= $e($editMenu['description'] ?? '') ?>
+                        </textarea>
+                    </label>
                     <label class="text-sm font-semibold">Availability<select name="is_available"
                             class="mt-2 w-full rounded-xl border border-border bg-inner-card px-4 py-3 text-sm outline-none focus:border-primary">
-                            <option value="Y" <?= ($editMenu['is_available'] ?? 'Y') === 'Y' ? 'selected' : '' ?>>Available
+                            <option value="Y" <?= ($editMenu['is_available'] ?? 'Y') === 'Y' ? 'selected' : '' ?>>
+                                Available
                             </option>
                             <option value="N" <?= ($editMenu['is_available'] ?? '') === 'N' ? 'selected' : '' ?>>
-                                Unavailable</option>
-                        </select></label>
-                    <div class="flex gap-2 sm:col-span-2 lg:col-span-3"><button
+                                Unavailable
+                            </option>
+                        </select>
+                    </label>
+                    <div class="flex gap-2 sm:col-span-2 lg:col-span-3">
+                        <button
                             class="rounded-xl bg-primary px-5 py-3 text-sm font-bold text-light hover:bg-primary-hover"
-                            type="submit"><?= $editMenu ? 'Save menu item' : 'Add menu item' ?></button><?php if ($editMenu): ?><a
-                                href="index.php#menu-management"
-                                class="rounded-xl border border-border px-5 py-3 text-sm font-semibold">Cancel</a><?php endif; ?>
+                            type="submit"><?= $editMenu ? 'Save menu item' : 'Add menu item' ?>
+                        </button>
+                        <?php if ($editMenu): ?>
+                            <a href="index.php#menu-management"
+                                class="rounded-xl border border-border px-5 py-3 text-sm font-semibold">Cancel
+                            </a>
+                        <?php endif; ?>
                     </div>
                 </form>
                 <div class="overflow-x-auto">
-                    <table class="w-full min-w-[700px] text-left text-sm">
+                    <table class="w-full min-w-175 text-left text-sm">
                         <thead class="text-xs uppercase tracking-wider text-tertiary">
                             <tr>
                                 <th class="pb-3">Item</th>
@@ -395,8 +415,8 @@ $e = static fn($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 
                                                 <input type="hidden" name="token"
                                                     value="<?= $e($_SESSION['admin_token']) ?>"><input type="hidden"
                                                     name="action" value="delete_menu"><input type="hidden" name="menu_id"
-                                                    value="<?= (int) $item['menu_id'] ?>"><button
-                                                    type="button" data-delete-trigger data-delete-type="menu item"
+                                                    value="<?= (int) $item['menu_id'] ?>"><button type="button"
+                                                    data-delete-trigger data-delete-type="menu item"
                                                     data-delete-name="<?= $e($item['item_name']) ?>"
                                                     class="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-700 hover:bg-red-50">Delete</button>
                                             </form>
@@ -411,14 +431,15 @@ $e = static fn($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 
                     </table>
                 </div>
             </section>
-            <footer class="mt-8 text-center text-xs text-tertiary">© <?= date('Y') ?> KAINSTEIN · Admin console</footer>
+            <footer class="mt-8 text-center text-xs text-tertiary">© <?= date('Y') ?> KAINSTEIN · Admin Control Panel
+            </footer>
         </main>
     </div>
 
     <!-- :: START DELETE CONFIRMATION MODAL -->
     <div id="deleteConfirmModal"
-        class="fixed inset-0 z-[100] hidden items-center justify-center bg-dark/50 p-4 backdrop-blur-sm"
-        role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="deleteConfirmTitle"
+        class="fixed inset-0 z-100 hidden items-center justify-center bg-dark/50 p-4 backdrop-blur-sm" role="dialog"
+        aria-modal="true" aria-hidden="true" aria-labelledby="deleteConfirmTitle"
         aria-describedby="deleteConfirmMessage">
         <div class="w-full max-w-sm rounded-2xl border border-border bg-inner-card p-6 shadow-2xl">
             <span class="grid size-12 place-items-center rounded-xl bg-secondary/10 text-2xl text-secondary">
@@ -437,51 +458,7 @@ $e = static fn($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 
     <!-- :: END DELETE CONFIRMATION MODAL -->
 
     <!-- :: START DELETE CONFIRMATION CONTROLS -->
-    <script>
-        const deleteModal = document.getElementById('deleteConfirmModal');
-        const deleteMessage = document.getElementById('deleteConfirmMessage');
-        const deleteCancel = document.getElementById('deleteCancel');
-        const deleteConfirm = document.getElementById('deleteConfirm');
-        let deleteFormToSubmit = null;
-        let lastDeleteTrigger = null;
-
-        function closeDeleteModal() {
-            deleteModal.classList.add('hidden');
-            deleteModal.classList.remove('flex');
-            deleteModal.setAttribute('aria-hidden', 'true');
-            document.body.classList.remove('overflow-hidden');
-            deleteFormToSubmit = null;
-            lastDeleteTrigger?.focus();
-        }
-
-        document.querySelectorAll('[data-delete-trigger]').forEach((button) => {
-            button.addEventListener('click', () => {
-                deleteFormToSubmit = button.closest('form');
-                lastDeleteTrigger = button;
-                const type = button.dataset.deleteType;
-                const name = button.dataset.deleteName;
-                deleteMessage.textContent = 'Delete ' + type + ' “' + name + '”? This action cannot be undone.';
-                deleteModal.classList.remove('hidden');
-                deleteModal.classList.add('flex');
-                deleteModal.setAttribute('aria-hidden', 'false');
-                document.body.classList.add('overflow-hidden');
-                deleteCancel.focus();
-            });
-        });
-
-        deleteCancel.addEventListener('click', closeDeleteModal);
-        deleteModal.addEventListener('click', (event) => {
-            if (event.target === deleteModal) closeDeleteModal();
-        });
-        deleteConfirm.addEventListener('click', () => {
-            if (deleteFormToSubmit) deleteFormToSubmit.requestSubmit();
-        });
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && !deleteModal.classList.contains('hidden')) {
-                closeDeleteModal();
-            }
-        });
-    </script>
+    <script src="admin.js" defer></script>
     <!-- :: END DELETE CONFIRMATION CONTROLS -->
 </body>
 
