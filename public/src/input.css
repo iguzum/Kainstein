@@ -4,7 +4,7 @@
 
 @font-face {
     font-family: "DM Sans";
-    src: url("../fonts/DMSans.woff2") format("woff2");
+    src: url("../assets/fonts/DMSans.woff2") format("woff2");
     font-weight: 100 1000;
     font-style: normal;
     font-display: swap;
@@ -12,7 +12,7 @@
 
 @font-face {
     font-family: "Playfair Display";
-    src: url("../fonts/PlayfairDisplay.woff2") format("woff2");
+    src: url("../assets/fonts/PlayfairDisplay.woff2") format("woff2");
     font-weight: 200 900;
     font-style: normal;
     font-display: swap;
@@ -24,8 +24,9 @@
 }
 
 @layer base {
-    html {
-        @apply --font-dm;
+    html,
+    body {
+        @apply font-dm;
     }
 }
 

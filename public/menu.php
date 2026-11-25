@@ -2,6 +2,7 @@
 use App\Controllers\Menu_Controller;
 use App\Controllers\Cart_Controller;
 use App\Controllers\Order_Controller;
+use App\Controllers\Create_Customer_Controller;
 use App\Structures\Bubble_Sort;
 
 // :: START MENU ROOT AUTOLOAD PATH
@@ -16,7 +17,13 @@ if (session_status() === PHP_SESSION_NONE) {
 $controller = new Menu_Controller();
 $cartController = new Cart_Controller();
 $orderController = new Order_Controller();
-$cartId = (int) ($_SESSION['cart_id'] ?? 0);
+// :: START SEPARATE STAFF ORDER SESSION
+$isStaffOrdering = ($_SESSION['account']['role'] ?? '') === 'staff';
+$cartId = (int) ($_SESSION[$isStaffOrdering ? 'staff_cart_id' : 'cart_id'] ?? 0);
+$staffOrderName = (string) ($_SESSION['staff_order_name'] ?? '');
+$staffOrderType = (string) ($_SESSION['staff_order_type'] ?? '');
+$staffOrderController = new Create_Customer_Controller();
+// :: END SEPARATE STAFF ORDER SESSION
 $selectedCategory = isset($_GET['category']) && is_string($_GET['category'])
     ? strtolower(trim($_GET['category']))
     : 'all';
@@ -53,6 +60,7 @@ $loadError = false;
 $cartError = '';
 $orderError = '';
 $showOrderModal = false;
+$customerName = $isStaffOrdering ? $staffOrderName : '';
 
 // :: START CART ADD SUBMISSION TOKEN
 if (empty($_SESSION['cart_add_token'])) {
@@ -79,8 +87,19 @@ if (
         unset($_SESSION['cart_add_token']);
         // :: END ACCEPT CART ADD SUBMISSION ONCE
 
-        if ($cartId < 1 || $menuId === false || $quantity === false || $quantity < 1 || $quantity > 99) {
+        if ($menuId === false || $quantity === false || $quantity < 1 || $quantity > 99) {
             throw new InvalidArgumentException('Please choose a valid item quantity.');
+        }
+
+        // :: START CREATE STAFF CART WHEN FIRST ITEM IS ADDED
+        if ($isStaffOrdering && $cartId < 1) {
+            $staffCart = $staffOrderController->startStaffCart();
+            $cartId = (int) $staffCart['cart_id'];
+        }
+        // :: END CREATE STAFF CART WHEN FIRST ITEM IS ADDED
+
+        if ($cartId < 1) {
+            throw new InvalidArgumentException('Your cart could not be started. Please try again.');
         }
 
         $cartController->addToCart($cartId, $menuId, $quantity);
@@ -118,17 +137,51 @@ if (
     ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST'
     && ($_POST['form_action'] ?? '') === 'place_order'
 ) {
+    // :: START READ ORDER DETAILS FROM MODAL
     $customerName = isset($_POST['customer_name']) && is_string($_POST['customer_name'])
         ? $_POST['customer_name']
         : '';
+    $orderId = (int) ($_SESSION[$isStaffOrdering ? 'staff_order_id' : 'order_id'] ?? 0);
+    $customerId = (int) ($_SESSION[$isStaffOrdering ? 'staff_customer_id' : 'customer_id'] ?? 0);
+    // :: END READ ORDER DETAILS FROM MODAL
 
     try {
+        // :: START CREATE STAFF ORDER WHEN CONFIRMED
+        if ($isStaffOrdering) {
+            $orderType = isset($_POST['order_type']) && is_string($_POST['order_type'])
+                ? $_POST['order_type']
+                : '';
+
+            if ($cartId < 1 || empty($cartController->getCartItems($cartId))) {
+                throw new InvalidArgumentException('Add at least one item before placing the order.');
+            }
+
+            $orderId = $staffOrderController->prepareStaffOrder($customerName, $orderType);
+            $staffOrderName = $customerName;
+            $staffOrderType = $orderType;
+        }
+        // :: END CREATE STAFF ORDER WHEN CONFIRMED
+
         $orderController->placeOrder(
-            (int) ($_SESSION['order_id'] ?? 0),
-            (int) ($_SESSION['customer_id'] ?? 0),
+            $orderId,
+            $customerId,
             $cartId,
             $customerName
         );
+
+        // :: START RETURN STAFF TO DASHBOARD AFTER ORDER
+        if ($isStaffOrdering) {
+            unset(
+                $_SESSION['staff_order_id'],
+                $_SESSION['staff_customer_id'],
+                $_SESSION['staff_cart_id'],
+                $_SESSION['staff_order_name'],
+                $_SESSION['staff_order_type']
+            );
+            header('Location: staff/index.php?order=placed');
+            exit;
+        }
+        // :: END RETURN STAFF TO DASHBOARD AFTER ORDER
 
         unset($_SESSION['order_id'], $_SESSION['customer_id'], $_SESSION['cart_id'], $_SESSION['order_type']);
         // :: START MENU ORDER SUCCESS REDIRECT
@@ -137,9 +190,17 @@ if (
         exit;
     } catch (InvalidArgumentException $error) {
         $orderError = $error->getMessage();
+        if ($isStaffOrdering) {
+            $staffOrderName = $customerName;
+            $staffOrderType = (string) ($_POST['order_type'] ?? '');
+        }
         $showOrderModal = true;
     } catch (Throwable $error) {
         $orderError = 'Unable to place your order. Please try again.';
+        if ($isStaffOrdering) {
+            $staffOrderName = $customerName;
+            $staffOrderType = (string) ($_POST['order_type'] ?? '');
+        }
         $showOrderModal = true;
     }
 }
@@ -187,10 +248,15 @@ try {
     <!-- :: START MENU ROOT ASSET PATH -->
     <link rel="stylesheet" href="./src/output.css">
     <!-- :: END MENU ROOT ASSET PATH -->
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <!-- <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"> -->
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body class="min-h-screen bg-background font-dm text-dark antialiased">
+    <!-- :: START STAFF ORDER MODAL NOW OPENS AT PLACE ORDER -->
+    <!-- :: END STAFF ORDER MODAL NOW OPENS AT PLACE ORDER -->
+
     <div id="mobileOverlay" class="fixed inset-0 z-40 hidden bg-dark/40 backdrop-blur-[2px] lg:hidden"></div>
 
     <div class="min-h-screen lg:flex">
@@ -317,7 +383,8 @@ try {
                             <div class="relative h-75 overflow-hidden bg-outer-card">
                                 <!-- :: START UNAVAILABLE FOOD INDICATOR -->
                                 <?php if (!$isAvailable): ?>
-                                    <span class="absolute left-4 top-4 z-10 inline-flex items-center gap-2 rounded-full border border-light/20 bg-dark/80 px-3 py-2 text-xs font-bold text-light shadow-lg">
+                                    <span
+                                        class="absolute left-4 top-4 z-10 inline-flex items-center gap-2 rounded-full border border-light/20 bg-dark/80 px-3 py-2 text-xs font-bold text-light shadow-lg">
                                         <i class="bx bx-x-circle text-base" aria-hidden="true"></i>
                                         Unavailable
                                     </span>
@@ -358,7 +425,8 @@ try {
                                     <!-- :: START AVAILABILITY AWARE ADD BUTTON -->
                                     <button type="submit" <?= $isAvailable ? '' : 'disabled' ?>
                                         class="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-xs font-bold text-light transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:bg-tertiary/50">
-                                        <i class="<?= $isAvailable ? 'bx bx-cart-add' : 'bx bx-x-circle' ?> text-base" aria-hidden="true"></i>
+                                        <i class="<?= $isAvailable ? 'bx bx-cart-add' : 'bx bx-x-circle' ?> text-base"
+                                            aria-hidden="true"></i>
                                         <?= $isAvailable ? 'Add to cart' : 'Unavailable' ?>
                                     </button>
                                     <!-- :: END AVAILABILITY AWARE ADD BUTTON -->
@@ -465,7 +533,11 @@ try {
                     <p class="text-xs font-bold uppercase tracking-[.18em] text-secondary">Almost there</p>
                     <h2 id="placeOrderTitle" class="mt-2 font-playfair text-2xl font-bold text-dark">Place your order
                     </h2>
-                    <p class="mt-2 text-sm text-tertiary">Enter your name so we can identify your order.</p>
+                    <?php if ($isStaffOrdering): ?>
+                        <p class="mt-2 text-sm text-tertiary">Enter your name and order type to place this order.</p>
+                    <?php else: ?>
+                        <p class="mt-2 text-sm text-tertiary">Enter your name so we can identify your order.</p>
+                    <?php endif; ?>
                 </div>
                 <button id="placeOrderClose" type="button" aria-label="Close name dialog"
                     class="grid size-10 shrink-0 place-items-center rounded-full bg-outer-card text-xl text-dark hover:bg-background-hover">
@@ -482,11 +554,40 @@ try {
 
             <form method="post" action="<?= htmlspecialchars($menuUrl, ENT_QUOTES, 'UTF-8') ?>" class="mt-6">
                 <input type="hidden" name="form_action" value="place_order">
-                <label for="customerName" class="mb-2 block text-sm font-semibold text-dark">Your name</label>
-                <input id="customerName" name="customer_name" type="text" maxlength="50" required autocomplete="name"
-                    value="<?= htmlspecialchars(is_string($customerName ?? null) ? ($customerName ?? '') : '', ENT_QUOTES, 'UTF-8') ?>"
-                    placeholder="Enter your name"
-                    class="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-dark outline-none transition placeholder:text-tertiary/70 focus:border-primary focus:ring-4 focus:ring-primary/10">
+                <!-- :: START STAFF OR CUSTOMER ORDER DETAILS -->
+                <?php if ($isStaffOrdering): ?>
+                    <label for="staffCustomerName" class="mb-2 block text-sm font-semibold text-dark">Your name</label>
+                    <input id="staffCustomerName" name="customer_name" type="text" maxlength="50" required
+                        autocomplete="name" value="<?= htmlspecialchars($staffOrderName, ENT_QUOTES, 'UTF-8') ?>"
+                        placeholder="Enter your name"
+                        class="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-dark outline-none transition placeholder:text-tertiary/70 focus:border-primary focus:ring-4 focus:ring-primary/10">
+                    <fieldset class="mt-5">
+                        <legend class="mb-3 text-sm font-semibold text-dark">Order type</legend>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label
+                                class="has-checked:border-primary has-checked:bg-outer-card flex cursor-pointer items-center gap-3 rounded-xl border border-border bg-background p-4 transition hover:border-primary">
+                                <input type="radio" name="order_type" value="dine_in" required
+                                    <?= $staffOrderType === 'dine_in' ? 'checked' : '' ?> class="h-4 w-4 accent-primary">
+                                <span class="flex items-center gap-2 text-sm font-semibold"><i
+                                        class="bx bx-bowl-hot text-xl text-primary" aria-hidden="true"></i> Dine in</span>
+                            </label>
+                            <label
+                                class="has-checked:border-primary has-checked:bg-outer-card flex cursor-pointer items-center gap-3 rounded-xl border border-border bg-background p-4 transition hover:border-primary">
+                                <input type="radio" name="order_type" value="take_out" required
+                                    <?= $staffOrderType === 'take_out' ? 'checked' : '' ?> class="h-4 w-4 accent-primary">
+                                <span class="flex items-center gap-2 text-sm font-semibold"><i
+                                        class="bx bx-takeaway text-xl text-primary" aria-hidden="true"></i> Take out</span>
+                            </label>
+                        </div>
+                    </fieldset>
+                <?php else: ?>
+                    <label for="customerName" class="mb-2 block text-sm font-semibold text-dark">Your name</label>
+                    <input id="customerName" name="customer_name" type="text" maxlength="50" required autocomplete="name"
+                        value="<?= htmlspecialchars(is_string($customerName ?? null) ? ($customerName ?? '') : '', ENT_QUOTES, 'UTF-8') ?>"
+                        placeholder="Enter your name"
+                        class="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-dark outline-none transition placeholder:text-tertiary/70 focus:border-primary focus:ring-4 focus:ring-primary/10">
+                <?php endif; ?>
+                <!-- :: END STAFF OR CUSTOMER ORDER DETAILS -->
                 <button type="submit"
                     class="mt-5 w-full rounded-xl bg-primary px-5 py-3.5 text-sm font-bold text-light transition hover:bg-primary-hover">
                     Confirm order

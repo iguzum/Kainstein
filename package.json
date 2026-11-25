@@ -8,6 +8,6 @@
     "scripts": {
         "dev": "concurrently \"npm run tailwind\" \"npm run sync\"",
         "tailwind": "npx @tailwindcss/cli -i public/src/input.css -o public/src/output.css --watch",
-        "sync": "browser-sync start --proxy \"http://localhost/KAINSTEIN/public\" --files \"public/**/*\""
+        "sync": "browser-sync start --proxy \"http://localhost/Kainstein/public\" --files \"public/**/*\""
     }
 }

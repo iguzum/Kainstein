@@ -299,11 +299,13 @@ $e = static fn($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 
                                         <div class="flex justify-end gap-2"><a
                                                 href="?edit_staff=<?= (int) $member['account_id'] ?>&amp;staff_search=<?= urlencode($staffSearch) ?>#staff-management"
                                                 class="rounded-lg border border-border px-3 py-2 text-xs font-semibold hover:border-primary">Edit</a>
-                                            <form method="post" onsubmit="return confirm('Delete this staff account?')">
+                                            <form method="post">
                                                 <input type="hidden" name="token"
                                                     value="<?= $e($_SESSION['admin_token']) ?>"><input type="hidden"
                                                     name="action" value="delete_staff"><input type="hidden"
                                                     name="account_id" value="<?= (int) $member['account_id'] ?>"><button
+                                                    type="button" data-delete-trigger data-delete-type="staff account"
+                                                    data-delete-name="<?= $e($member['account_name']) ?>"
                                                     class="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-700 hover:bg-red-50">Delete</button>
                                             </form>
                                         </div>
@@ -389,12 +391,13 @@ $e = static fn($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 
                                         <div class="flex justify-end gap-2"><a
                                                 href="?edit_menu=<?= (int) $item['menu_id'] ?>#menu-management"
                                                 class="rounded-lg border border-border px-3 py-2 text-xs font-semibold hover:border-primary">Edit</a>
-                                            <form method="post"
-                                                onsubmit="return confirm('Delete this menu item? Existing orders may prevent deletion.')">
+                                            <form method="post">
                                                 <input type="hidden" name="token"
                                                     value="<?= $e($_SESSION['admin_token']) ?>"><input type="hidden"
                                                     name="action" value="delete_menu"><input type="hidden" name="menu_id"
                                                     value="<?= (int) $item['menu_id'] ?>"><button
+                                                    type="button" data-delete-trigger data-delete-type="menu item"
+                                                    data-delete-name="<?= $e($item['item_name']) ?>"
                                                     class="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-700 hover:bg-red-50">Delete</button>
                                             </form>
                                         </div>
@@ -411,6 +414,75 @@ $e = static fn($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 
             <footer class="mt-8 text-center text-xs text-tertiary">© <?= date('Y') ?> KAINSTEIN · Admin console</footer>
         </main>
     </div>
+
+    <!-- :: START DELETE CONFIRMATION MODAL -->
+    <div id="deleteConfirmModal"
+        class="fixed inset-0 z-[100] hidden items-center justify-center bg-dark/50 p-4 backdrop-blur-sm"
+        role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="deleteConfirmTitle"
+        aria-describedby="deleteConfirmMessage">
+        <div class="w-full max-w-sm rounded-2xl border border-border bg-inner-card p-6 shadow-2xl">
+            <span class="grid size-12 place-items-center rounded-xl bg-secondary/10 text-2xl text-secondary">
+                <i class="bx bx-trash" aria-hidden="true"></i>
+            </span>
+            <h2 id="deleteConfirmTitle" class="mt-4 font-playfair text-2xl font-bold">Delete this item?</h2>
+            <p id="deleteConfirmMessage" class="mt-2 text-sm leading-6 text-tertiary"></p>
+            <div class="mt-6 flex justify-end gap-3">
+                <button id="deleteCancel" type="button"
+                    class="rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-dark transition hover:bg-background-hover">Cancel</button>
+                <button id="deleteConfirm" type="button"
+                    class="rounded-xl bg-secondary px-4 py-2.5 text-sm font-bold text-light transition hover:bg-secondary-hover">Delete</button>
+            </div>
+        </div>
+    </div>
+    <!-- :: END DELETE CONFIRMATION MODAL -->
+
+    <!-- :: START DELETE CONFIRMATION CONTROLS -->
+    <script>
+        const deleteModal = document.getElementById('deleteConfirmModal');
+        const deleteMessage = document.getElementById('deleteConfirmMessage');
+        const deleteCancel = document.getElementById('deleteCancel');
+        const deleteConfirm = document.getElementById('deleteConfirm');
+        let deleteFormToSubmit = null;
+        let lastDeleteTrigger = null;
+
+        function closeDeleteModal() {
+            deleteModal.classList.add('hidden');
+            deleteModal.classList.remove('flex');
+            deleteModal.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('overflow-hidden');
+            deleteFormToSubmit = null;
+            lastDeleteTrigger?.focus();
+        }
+
+        document.querySelectorAll('[data-delete-trigger]').forEach((button) => {
+            button.addEventListener('click', () => {
+                deleteFormToSubmit = button.closest('form');
+                lastDeleteTrigger = button;
+                const type = button.dataset.deleteType;
+                const name = button.dataset.deleteName;
+                deleteMessage.textContent = 'Delete ' + type + ' “' + name + '”? This action cannot be undone.';
+                deleteModal.classList.remove('hidden');
+                deleteModal.classList.add('flex');
+                deleteModal.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('overflow-hidden');
+                deleteCancel.focus();
+            });
+        });
+
+        deleteCancel.addEventListener('click', closeDeleteModal);
+        deleteModal.addEventListener('click', (event) => {
+            if (event.target === deleteModal) closeDeleteModal();
+        });
+        deleteConfirm.addEventListener('click', () => {
+            if (deleteFormToSubmit) deleteFormToSubmit.requestSubmit();
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !deleteModal.classList.contains('hidden')) {
+                closeDeleteModal();
+            }
+        });
+    </script>
+    <!-- :: END DELETE CONFIRMATION CONTROLS -->
 </body>
 
 </html>

@@ -1,6 +1,6 @@
 {
     "name": "dsa-final/kainstein",
-    "description": "Kainstein - Smart food ordering and canteen management system",
+    "description": "Kainstein - Smart food ordering management system",
     "autoload": {
         "psr-4": {
             "App\\": "App/"

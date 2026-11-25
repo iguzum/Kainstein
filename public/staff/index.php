@@ -18,6 +18,9 @@ if (!$staffAccount || ($staffAccount['role'] ?? '') !== 'staff') {
 $orderController = new Order_Controller();
 $queueError = '';
 $completedOrder = isset($_GET['completed']) && $_GET['completed'] === '1';
+// :: START STAFF ORDER PLACED STATUS
+$placedOrder = isset($_GET['order']) && $_GET['order'] === 'placed';
+// :: END STAFF ORDER PLACED STATUS
 
 // :: START COMPLETE FIRST QUEUED ORDER
 if (
@@ -126,6 +129,11 @@ try {
             </header>
 
             <!-- :: START ORDER QUEUE FEEDBACK -->
+            <?php if ($placedOrder): ?>
+                <p role="status" class="mb-5 rounded-xl border border-primary/20 bg-primary/10 px-4 py-3 text-sm font-semibold text-primary">
+                    Customer order placed and added to the FIFO queue.
+                </p>
+            <?php endif; ?>
             <?php if ($completedOrder): ?>
                 <p role="status" class="mb-5 rounded-xl border border-primary/20 bg-primary/10 px-4 py-3 text-sm font-semibold text-primary">
                     Order completed and removed from the queue.
