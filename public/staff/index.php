@@ -84,7 +84,7 @@ try {
                 </a>
                 <a href="#orders"
                     class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-tertiary transition hover:bg-background-hover hover:text-dark">
-                    <i class="bx bx-receipt text-xl" aria-hidden="true"></i> Order queue
+                    <i class="bx bx-receipt text-xl" aria-hidden="true"></i> Order Queue
                 </a>
                 <!-- :: START STAFF MENU ROOT LINK -->
                 <a href="../menu.php"
