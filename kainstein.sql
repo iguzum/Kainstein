@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 25, 2026 at 02:05 AM
+-- Generation Time: Nov 25, 2026 at 05:12 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -43,7 +43,8 @@ CREATE TABLE `account` (
 
 INSERT INTO `account` (`account_id`, `email`, `password`, `role`, `created_at`, `updated_at`, `account_name`) VALUES
 (1, 'admin@gmail.com', '$2y$10$z5D0hfk2QHUY2tgJhh2Bk.j2QbmK9uSCuhUGa1eL0bIWAQ9sMnT3i', 'admin', '2026-11-25 00:23:50', '2026-11-25 00:47:49', 'Manager'),
-(5, 'staff_1@gmail.com', '$2y$10$cIXFJbcbkyGasLrLyr9NXOD92hDNpAqwbUu3o01Eq/osSHfKwb0RK', 'staff', '2026-11-25 00:32:32', '2026-11-25 00:47:57', 'Mark Jay');
+(2, 'staff_1@gmail.com', '$2y$10$cIXFJbcbkyGasLrLyr9NXOD92hDNpAqwbUu3o01Eq/osSHfKwb0RK', 'staff', '2026-11-25 00:32:32', '2026-11-25 05:10:11', 'Mark Jay Capinding'),
+(3, 'staff_2@gmail.com', '$2y$10$7Ds2mjg8IwP0pDevAfbhY.OgENvLGkPZWyDqOLs5w7O1ogEa3k51C', 'staff', '2026-11-25 02:06:31', '2026-11-25 05:10:13', 'Sofhia Condao');
 
 -- --------------------------------------------------------
 
@@ -68,23 +69,6 @@ CREATE TABLE `cart_items` (
   `menu_id` int UNSIGNED NOT NULL,
   `quantity` int UNSIGNED NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `cart_items`
---
-
-INSERT INTO `cart_items` (`cart_item_id`, `cart_id`, `menu_id`, `quantity`) VALUES
-(1, 13, 2, 4),
-(2, 13, 3, 1),
-(3, 13, 4, 1),
-(4, 13, 1, 1),
-(12, 17, 3, 2),
-(13, 18, 1, 2),
-(19, 19, 1, 4),
-(20, 19, 9, 4),
-(21, 19, 10, 2),
-(22, 19, 11, 2),
-(26, 21, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -118,15 +102,15 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`menu_id`, `item_name`, `category`, `image_url`, `description`, `price`, `is_available`) VALUES
-(1, 'Lechon Kawali', 'main_dishes', 'https://images.unsplash.com/photo-1625477811233-044633d10dd1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', 'Crispy deep-fried pork belly served with steamed rice and special sauce', '189.00', 'Y'),
-(2, 'Pork Sisig', 'main_dishes', 'https://images.unsplash.com/photo-1646821195934-fb7ddb6166ab?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', 'Sizzling chopped pork with onions, chili, and calamansi', '175.00', 'Y'),
+(1, 'Lechon Kawali', 'main_dishes', 'https://images.unsplash.com/photo-1625477811233-044633d10dd1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', 'Crispy deep-fried pork belly served with steamed rice and special sauce', '185.00', 'Y'),
+(2, 'Pork Sisig', 'main_dishes', 'https://images.unsplash.com/photo-1646821195934-fb7ddb6166ab?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', 'Sizzling chopped pork with onions, chili, and calamansi', '185.00', 'Y'),
 (3, 'Chicken Inasal', 'main_dishes', 'https://images.unsplash.com/photo-1695505486442-8ad6e83d942d?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', 'Grilled chicken marinated in lemongrass, calamansi, and garlic', '185.00', 'Y'),
 (4, 'Beef Tapa', 'main_dishes', 'https://images.unsplash.com/photo-1660899224928-73e1fdd20545?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', 'Tender marinated beef strips served with garlic rice and fried egg', '155.00', 'Y'),
 (5, 'Pork Barbecue', 'main_dishes', 'https://images.unsplash.com/photo-1616252980327-ec70572e5df9?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', 'Grilled pork barbecue skewers coated in sweet and savory sauce', '145.00', 'Y'),
 (6, 'Fried Chicken', 'main_dishes', 'https://images.unsplash.com/photo-1764018292116-003fd7d1a0ba?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', 'Crispy golden fried chicken served with steamed rice and gravy', '165.00', 'Y'),
-(7, 'Pork Sinigang', 'main_dishes', 'https://images.unsplash.com/photo-1599665141552-09848513740c?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', 'Tender pork simmered in a sour tamarind broth with fresh vegetables', '195.00', 'Y'),
-(8, 'Beef Kare-Kare', 'main_dishes', 'https://plus.unsplash.com/premium_photo-1723708871094-2c02cf5f5394?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', 'Slow-cooked beef and vegetables in rich peanut sauce with bagoong', '225.00', 'Y'),
-(9, 'Chocolate Cake', 'desserts', 'https://images.unsplash.com/photo-1768260731727-275f15ed2556?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', 'Moist chocolate cake topped with smooth chocolate frosting', '130.00', 'Y'),
+(7, 'Pork Sinigang', 'main_dishes', 'https://images.unsplash.com/photo-1599665141552-09848513740c?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', 'Tender pork simmered in a sour tamarind broth with fresh vegetables', '175.00', 'Y'),
+(8, 'Beef Kare-Kare', 'main_dishes', 'https://plus.unsplash.com/premium_photo-1723708871094-2c02cf5f5394?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', 'Slow-cooked beef and vegetables in rich peanut sauce with bagoong', '185.00', 'Y'),
+(9, 'Chocolate Cake', 'desserts', 'https://images.unsplash.com/photo-1768260731727-275f15ed2556?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', 'Moist chocolate cake topped with smooth chocolate frosting', '99.00', 'Y'),
 (10, 'Strawberry Cheesecake', 'desserts', 'https://plus.unsplash.com/premium_photo-1722686461601-b2a018a4213b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', 'Creamy cheesecake layered with a buttery crust and fresh strawberry topping', '85.00', 'Y'),
 (11, 'Chocolate Brownies', 'desserts', 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', 'Soft and fudgy chocolate brownies with a rich cocoa flavor', '85.00', 'Y'),
 (12, 'Vanilla Ice Cream', 'desserts', 'https://images.unsplash.com/photo-1560008581-09826d1de69e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', 'Classic creamy vanilla ice cream served with chocolate drizzle', '85.00', 'Y'),
@@ -168,15 +152,6 @@ CREATE TABLE `order_items` (
   `quantity` int UNSIGNED NOT NULL DEFAULT '1',
   `unit_price` decimal(10,2) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `order_items`
---
-
-INSERT INTO `order_items` (`order_item_id`, `order_id`, `menu_id`, `quantity`, `unit_price`) VALUES
-(1, 22, 1, 1, '189.00'),
-(2, 23, 7, 1, '195.00'),
-(3, 23, 3, 1, '185.00');
 
 --
 -- Indexes for dumped tables
@@ -238,7 +213,7 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `account_id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `account_id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `cart`
@@ -250,7 +225,7 @@ ALTER TABLE `cart`
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `cart_item_id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `cart_item_id` int UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `customer`
@@ -262,7 +237,7 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `menu_id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `menu_id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -274,7 +249,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `order_item_id` int UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
